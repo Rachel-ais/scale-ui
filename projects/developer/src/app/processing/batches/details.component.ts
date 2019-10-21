@@ -18,7 +18,6 @@ import { Observable } from 'rxjs';
     styleUrls: ['./details.component.scss']
 })
 export class BatchDetailsComponent implements OnInit {
-    private routeParams: any;
     createForm: any;
     createFormSubscription: any;
     loading: boolean;
@@ -190,11 +189,6 @@ export class BatchDetailsComponent implements OnInit {
             console.log(err);
             this.messageService.add({severity: 'error', summary: 'Error retrieving recipe type details', detail: err.statusText});
         });
-    }
-
-    onEditClick() {
-        this.isEditing = true;
-        this.initEdit();
     }
 
     onValidateClick() {
