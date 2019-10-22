@@ -18,6 +18,7 @@ import { Observable } from 'rxjs';
     styleUrls: ['./details.component.scss']
 })
 export class BatchDetailsComponent implements OnInit {
+    private routeParams: any;
     createForm: any;
     createFormSubscription: any;
     loading: boolean;
