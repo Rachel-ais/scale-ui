@@ -77,7 +77,7 @@
         </div>
         <div *ngIf="isEditing && batch">
             <div class="p-grid" [formGroup]="createForm">
-                <div [ngClass]="layoutClass">
+                <div class=" p-col-12" [ngClass]="layoutClass">
                     <div class="margin-bottom-md">
                         <label>
                             <span class="required">Title</span>
@@ -86,17 +86,21 @@
                     </div>
                     <div>
                         <label>
-                            <span class="required">Description</span>
+                            <span>Description</span>
                             <textarea pInputTextarea type="text" id="description" rows="8" formControlName="description"
                                 maxLength="500" pTooltip="Description has a 500 character limit."class="full-width"></textarea>
                         </label>
                     </div>
-                    <div formGroupName="configuration">
-                        <label>
-                            <span>Priority</span>
-                            <input pInputText type="number" id="priority" formControlName="priority"
-                                   class="full-width"/>
-                        </label>
+                    <span>Date Range:</span>
+                    <div class="noWrap">
+                        <label>From:</label>
+                        <utc-datepicker [date]="started" [button]="true" [format]="dateFormat"
+                                        (dateChange)="onStartSelect($event)"></utc-datepicker>
+                    </div>
+                    <div class="noWrap">
+                        <label>To:</label>
+                        <utc-datepicker [date]="ended" [button]="true" [format]="dateFormat"
+                                        (dateChange)="onEndSelect($event)"></utc-datepicker>
                     </div>
                 </div>
                 <div class="p-col-6" *ngIf="!batch.id">
@@ -113,7 +117,7 @@
                         </label>
                     </div>
                     <div formGroupName="definition">
-                        <div class="margin-bottom-md" formGroupName="previous_batch">
+                        <!-- <div class="margin-bottom-md" formGroupName="previous_batch">
                             <strong>Previous Batch</strong>
                             <div *ngIf="previousBatchOptions.length === 0">
                                 Choose a recipe type in order to see relevant batches.
@@ -126,12 +130,12 @@
                                     </ng-template>
                                 </p-dropdown>
                             </div>
-                        </div>
-                        <div class="margin-bottom-md" formGroupName="previous_batch" *ngIf="batch.recipe_type">
+                        </div> -->
+                        <!-- <div class="margin-bottom-md" formGroupName="previous_batch" *ngIf="batch.recipe_type">
                             <p-checkbox label="All Nodes" (onChange)="setAllNodes($event)"
                                         pTooltip="Reprocess every node">
                             </p-checkbox>
-                        </div>
+                        </div> -->
                         <div class="margin-bottom-md" formGroupName="previous_batch">
                             <strong>Forced Nodes</strong>
                             <div *ngIf="!batch.recipe_type">Choose a recipe type in order to see relevant nodes.</div>
@@ -143,8 +147,41 @@
                             </div>
                         </div>
                     </div>
+                    <div formGroupName="configuration">
+                        <label>
+                            <span>Priority</span>
+                            <input pInputText type="number" id="priority" formControlName="priority"
+                                   class="full-width"/>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
     </p-panel>
 </div>
+<p-sidebar visible="true" [blockScroll]="true" position="right" [style]="{width:'30%'}"
+           *ngIf="isEditing">
+           <h2>Data set</h2>
+           <p-table [columns]="cols" [value]="files" [(selection)]="selectedFiles" dataKey="vin">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th style="width: 3em">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                    <td>
+                        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                    </td>
+                    <td *ngFor="let col of columns">
+                        {{rowData[files.file_name]}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+</p-sidebar>

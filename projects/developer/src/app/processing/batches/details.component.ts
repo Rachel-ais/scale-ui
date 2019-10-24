@@ -21,6 +21,7 @@ export class BatchDetailsComponent implements OnInit {
     private routeParams: any;
     createForm: any;
     createFormSubscription: any;
+    column = { field: 'file_name', header: 'File Name' };
     loading: boolean;
     isEditing: boolean;
     isSaving = false;
@@ -173,6 +174,7 @@ export class BatchDetailsComponent implements OnInit {
         });
 
         // populate node dropdown
+        this.nodeOptions = [];
         this.recipeTypesApiService.getRecipeType(event.value.name).subscribe(data => {
             _.forEach(data.job_types, jobType => {
                 const nodeName = _.findKey(data.definition.nodes, {
